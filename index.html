@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BDT Fi</title>
+
+<style>
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    background: #fff;
+}
+
+iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+</style>
+</head>
+
+<body>
+
+<iframe id="app" src="https://jobfiapp.github.io/jobfiapp/"></iframe>
+
+<script>
+const app = document.getElementById("app");
+
+const preload = document.createElement("link");
+preload.rel = "preload";
+preload.as = "document";
+preload.href = "https://jobfiapp.github.io/jobfiapp/";
+document.head.appendChild(preload);
+
+document.addEventListener("click", function(e){
+    let link = e.target.closest("a");
+    if(link && link.href){
+        e.preventDefault();
+        app.src = link.href;
+    }
+});
+
+document.body.style.userSelect = "text";
+
+app.onerror = function(){
+    app.src = "https://jobfiapp.github.io/jobfiapp/";
+};
+
+let lastURL = app.src;
+setInterval(()=>{
+    if(app.src !== lastURL){
+        lastURL = app.src;
+    }
+}, 1000);
+
+let lastBack = 0;
+window.onpopstate = function(){
+    let now = Date.now();
+    if(now - lastBack < 2000){
+        window.close();
+    } else {
+        alert("Press again to exit");
+        lastBack = now;
+    }
+};
+</script>
+
+</body>
+</html>
